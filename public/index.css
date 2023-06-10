@@ -1,0 +1,570 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    color:#ac4855;
+    font-family: 'Courier New', Courier, monospace;
+    user-select: none;
+    overflow-x: hidden;
+}
+body {
+  background-image: url("4vIE.gif");
+  background-repeat:no-repeat;
+  background-size: auto;
+  background-position: center;
+  background-position-y: 350px;
+  background-position-x: center;
+  animation-name: changeBackground;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+}
+#title {
+    font-family: 'FAMILY_NAME', sans-serif;
+    font-weight: WEIGHT_OR_RANGE;
+    color: #333;
+    text-align: center;
+    font-size: 36px;
+    margin-top: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    background-image: linear-gradient(to right, #ff4f4f, #ffa94d);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation-name: rainbow; 
+    animation-duration: 5s; 
+    animation-iteration-count: infinite; 
+  }
+  @keyframes rainbow {
+    0% { color: #ff4f4f; }
+    20% { color: #ffa94d; }
+    40% { color: #ffc94d; }
+    60% { color: #a9d14d; }
+    80% { color: #4db7d1; }
+    100% { color: #7d4dd1; }
+  }
+  
+  #logo-innovative {
+    display: block;
+    max-width: 200px;
+    margin: 0 auto;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #fff;
+    transition: transform 3s ease-in-out;
+  }
+
+  /* Logo effect */
+  #logo-innovative:hover {
+    transform: scale(1.5) rotate(360deg);
+  }
+
+
+/*@keyframes changeBackground {
+  0% {
+    background-image: url("4vIE.gif");
+  }
+  25% {
+    background-image: url("Br24.gif");
+  }
+  50% {
+    background-image: url("Br24.gif");
+  }
+  /* Aggiungi qui ulteriori regole per le tue immagini 
+}*/
+
+canvas {
+    opacity: 0;
+    transition: opacity 5s ease-in-out;
+  }
+  
+  canvas.show {
+    opacity: 1;
+  }
+#title{
+  margin: 10;
+    grid-column: 1 / span 3;
+    margin-right: 10px;
+    margin-left: 10px;
+    text-align: center;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 350px;
+    margin: 30px auto;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    
+
+}
+
+.field {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    grid-column-gap: 10px;
+    align-items: center;
+  }
+  #input-field {
+    margin: 0;
+    grid-column: 1 / span 3;
+    margin-right: 0px;
+  }
+  #add-button {
+    text-align-last: center;
+    grid-column: 1 / span 3;
+    text-align: center;
+    font-family: 'Rubik', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+  }
+   #input-TestField {
+    display:flex;
+    flex-direction: column;
+    max-width: 350px;
+    margin-right: 50px;
+    user-select: none;
+    align-items: center;
+  }
+  #input-TextPswField {
+  margin: 10px auto; 
+}
+ #add-TestButton, #remove-TestButton {
+    text-align-last: center;
+    margin-right: 10px;
+    grid-column: 1 / span 3;
+    text-align: center;
+    font-family: 'Rubik', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+  }
+  
+  #add-button-decrease, #add-button-plus {
+    text-align-last: center;
+    margin-right: 10px;
+    grid-column: 1 / span 3;
+    text-align: center;
+    font-family: 'Rubik', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+    #show-chart {
+    text-align-last: center;
+    margin-right: 0px;
+    grid-column: 1 / span 3;
+    text-align: center;
+    font-family: 'Rubik', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #books {
+    grid-column: 1 / span 3;
+    margin-right: 10px;
+  }
+#Tbooks {
+    grid-column: 1 / span 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+  }
+  
+img {
+    width: 200px;
+    user-select: none;
+    align-content: center;
+    
+}
+
+input {
+    background-color: #DCE1EB;
+    padding: 15px;
+    border: 0;
+    border-radius: 8px;
+    font-size: 20px;
+    color: #432000;
+    text-align: center;
+    margin: 10px ;
+    margin-right: 0;
+    font-family: 'Rubik', sans-serif;
+}
+
+button {
+    background-color: #AC485A;
+    padding: 15px;
+    border: 0;
+    flex-grow: 1;
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 20px;
+    color: #FDFDFD;
+    font-family: 'Rubik', sans-serif;
+    margin-right: 110px;
+    width: 150px;
+    margin-bottom: 10px;
+}
+button:hover{
+    background-color:#DCE1EB ;
+    cursor: pointer;
+
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px;
+
+}
+ul li{
+    font-size: 20px;
+    background-color: #FDFDFD;
+    padding: 10px;
+    border-radius: 8px;
+    flex-grow: 1;
+    text-align: center;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+}
+ul li:hover{
+    background-color:#DCE1EB ;
+    cursor: pointer;
+}
+h1{
+    user-select: none;
+}
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
+#popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border: 1px solid #000;
+  padding: 20px;
+}
+
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+/* Set a style for all buttons */
+button {
+  background-color: #aa041a;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+/* Chart */
+/* Aggiorna la dimensione dei chart */
+.chart-container {
+  width: 200%;
+  max-width: 600px;
+  margin-bottom: 20px;
+}
+
+
+
+
+
+#popup {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 5px;
+  display: none;
+  z-index: 999;
+}
+
+#popup.show {
+  display: block;
+}
+
+#popup-message {
+  font-size: 18px;
+  text-align: center;
+}
+
+#popup-water {
+  background-color: rgba(236, 10, 10, 0.8);
+  color: #fff;
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 5px;
+  display: none;
+  z-index: 999;
+}
+
+#popup-water.show {
+  display: block;
+}
+
+#popup-water-message {
+  font-size: 18px;
+  text-align: center;
+}
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 300px;
+  margin: 0 auto;
+  margin-right: auto;
+  padding: 20px;
+  text-align: center;
+  align-items: center;
+
+}
+
+h1 {
+  font-family: 'FAMILY_NAME', sans-serif;
+  font-weight: WEIGHT_OR_RANGE;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.show {
+  display: block !important;
+}
+
+
+/* Aggiungi altre regole CSS se necessario */
+
+.selected {
+  background-color: rgb(136, 230, 136);
+
+}
+
+#myChart,
+#myLineChart,
+#myCircleChart {
+  display: contents;
+  justify-content: center;
+  align-items: center;
+  max-width: 300px;
+  max-width: 100% auto;
+  height: 300px; /* Regola l'altezza del chart come desiderato */
+  margin: 10 auto;
+  margin-bottom: 30px;
+  overflow: hidden; /* Nasconde eventuali parti dei chart che escono dal container */
+  
+  
+}
+
+
+#myCircleChart {
+  display: contents;
+  width: 100%;
+  align-items: center;
+  max-width: 400px;
+  margin-bottom: 10px;
+  /* background-image: url("CYW.gif");
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-position: center; */
+}
+
+#myCircleChart .chart-legend {
+  color: rgb(11, 139, 212);
+}
+
+
+/* Aggiungi stili per rendere i chart più visibili */
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  
+}
+.chart-container {
+  border: 2px solid transparent;
+}
+
+
+/* Aggiorna il pulsante per mostrare il chart */
+#show-chart {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 200px;
+}
+
+#show-chart:hover {
+  background-color: #0056b3;
+}
+
+
+
+@media (max-width: 300px) {
+    #page {
+    display: flex;
+    flex-direction: column;
+    max-width: 0px;
+    margin-right: 250px;
+
+}
+}
+
+.data-box {
+  position: relative;
+  justify-content: center;
+  padding: 10px;
+  background-color: #FDFDFD;
+  border-radius: 8px;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 150px; /* Larghezza fissa per i data box */
+
+}
+
+.data-box::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border: 2px solid #DCE1EB;
+  border-radius: 10px;
+}
+
+.data-box h3 {
+  margin-top: 0;
+}
+
+.data-box p {
+  margin: 0;
+}
+
+.data-box-group {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap; /* Aggiunto per far andare a capo i data box quando lo spazio è insufficiente */
+  margin: auto;
+  align-items: center;
+  margin-right: 120;
+  margin-left: 120;
+}
+
+.data-box {
+  flex: 0 0 auto;
+  margin-right: center; /* Rimuove lo spazio tra i data box */
+}
+.data-value {
+  font-family: "Arial", sans-serif; /* Imposta il tipo di font */
+  font-size: 20px; /* Imposta la dimensione del font */
+  color: #130404; /* Imposta il colore del testo */
+}
+
+/* Aggiungi stili specifici per la temperatura */
+#temperature-value, #ph-value, #humidity-value, #photoresistance-value, #water-value {
+  font-weight: bold; /* Imposta lo stile del font su grassetto */
+}
+
+
+/* Aggiungi un'icona per indicare i gradi centigradi */
+#temperature-value::after {
+  content: "°C"; /* Aggiungi il simbolo dei gradi centigradi dopo il numero */
+  display: inline-block; /* Assicurati che l'icona sia visualizzata in linea con il numero */
+  margin-left: 5px; /* Aggiungi uno spazio tra il numero e l'icona */
+}
+
+/* Aggiungi animazione al cambio di valore */
+.data-value {
+  transition: color 0.3s ease-in-out; /* Aggiungi una transizione fluida per il cambiamento di colore */
+}
+
+.data-value.highlight {
+  color: red; /* Cambia il colore del testo quando viene evidenziato */
+}
+
+@keyframes blink {
+  0% {
+    background-color: #fff;
+  }
+  50% {
+    background-color: red;
+  }
+  100% {
+    background-color: #fff;
+  }
+}
+
+#water-value {
+  animation: blink 1s infinite;
+}
+
+#water-value.blink {
+  animation: blink 1s infinite, resetColor 0s 0.5s forwards;
+}
+
+@keyframes resetColor {
+  to {
+    background-color: #fff;
+  }
+}
+#photoresistance-value {
+  animation: blink 1s infinite;
+}
+
+#photoresistance-value.blink {
+  animation: blink 1s infinite, resetColor 0s 0.5s forwards;
+}
+
+@keyframes resetColor {
+  to {
+    background-color: #fff;
+  }
+}
+
+
+
+
+
+
+

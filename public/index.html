@@ -1,0 +1,259 @@
+<html lang="eng">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>HMI EMBEDDED</title>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scaler=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=FAMILY_NAME:wght@WEIGHT_OR_RANGE&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+</head>
+<div class="container">
+
+  <body>
+    <style>
+      #page.hidden {
+        display: none;
+      }
+
+      #page-test.hidden {
+        display: none;
+      }
+
+      #input-TestField.hidden {
+        display: none;
+      }
+    </style>
+    <button id="button-login" onclick="hideLoginAndShowPage()" style="width:auto;">Login</button>
+    <script>
+      function hideLoginAndShowPage() {
+        document.getElementById('button-login').style.display = 'none';
+        document.getElementById('test-button').style.display = 'none';
+        document.getElementById('page').classList.remove('hidden');
+        document.getElementById("popup-message").innerHTML = "Ciao!";
+        document.getElementById("popup").classList.add("show");
+        setTimeout(function () {
+          document.getElementById("popup").classList.remove("show");
+        }, 3000);
+      }
+
+    </script>
+
+
+    <button id="test-button" onclick="hideTestAndShowPage()" style="width:auto;">Test</button>
+    <script>
+      function hideTestAndShowPage() {
+        document.getElementById('test-button').style.display = 'none';
+        document.getElementById('button-login').style.display = 'none';
+        document.getElementById('input-TestField').classList.remove('hidden');
+      }
+
+    </script>
+
+    <!-- Main Page -->
+    <div id="page" class="hidden">
+      <div class="container">
+        <img id="logo-innovative" src="logo.png" onclick="location.reload();" style="cursor: pointer;">
+        <h1 id="title">Innovative Dynamics</h1>
+        <input type="text" id="input-field" placeholder="GreenHouse Info">
+        <button id="add-button">About Us</button>
+        <ul id="Tbooks"></ul>
+        <!-- <button id="add-button-plus">+ Nutrient</button>
+        <button id="add-button-decrease">- Nutrient</button> -->
+        <button id="show-chart">Show Data</button>
+        <div class="chart-container">
+          <div class="data-box-group">
+            <div class="data-box">
+              <h3>Temperature</h3>
+              <p class="data-value" id="temperature-value">--°C</p>
+            </div>
+            <div class="data-box">
+              <h3>pH</h3>
+              <p class="data-value" id="ph-value">--</p>
+            </div>
+          </div>
+          <div class="data-box-group">
+            <div class="data-box">
+              <h3>Relative Humidity</h3>
+              <p class="data-value" id="humidity-value">--</p>
+            </div>
+            <div class="data-box">
+              <h3>Electrical Conductivity</h3>
+              <p class="data-value" id="photoresistance-value">--</p>
+              <!-- IMPORTANT NOTE: PHOTORESISTENCE -> IONIC CONDUCTIOVITY -->
+            </div>
+          </div>
+          <div class="data-box-group">
+            <div class="data-box">
+              <h3>Water</h3>
+              <p class="data-value" id="water-value">--</p>
+            </div>
+          </div>
+          <canvas id="myChart"></canvas>
+          <canvas id="myLineChart"></canvas>
+          <canvas id="myCircleChart"></canvas>
+        </div>
+      </div>
+      <div id="popup" class="hide">
+        <p id="popup-message"></p>
+      </div>
+      <div id="popup-water" class="hide">
+        <p id="popup-water-message"></p>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="functions.js" type="module"></script>
+    <script src="index.mjs" type="module"></script>
+    <script src="Test.js" type="module"></script>
+
+    <script>
+      // NOTE  ---> HERE
+      /* window.addEventListener("DOMContentLoaded", function () {
+        var savedModules = localStorage.getItem("modules");
+        var modules = savedModules ? JSON.parse(savedModules) : [];
+        var tBooksList = document.getElementById("Tbooks");
+        var selectedModuleId = localStorage.getItem("selectedModuleId"); // Recupera l'ID dell'ultimo modulo selezionato
+     
+        // Funzione per ripristinare la classe 'selected' sull'elemento corrispondente all'ultimo modulo selezionato
+        function restoreSelectedModule() {
+          var selectedModule = tBooksList.querySelector(".selected");
+          if (selectedModule) {
+            selectedModule.classList.remove("selected");
+          }
+          var lastSelectedModule = tBooksList.querySelector("#" + selectedModuleId);
+          if (lastSelectedModule) {
+            lastSelectedModule.classList.add("selected");
+          }
+        }
+     
+        // Add click event listener to each module
+        tBooksList.addEventListener("click", function (event) {
+          // Remove selected class from previously selected module
+          var selectedModule = tBooksList.querySelector(".selected");
+          if (selectedModule) {
+            selectedModule.classList.remove("selected");
+          }
+     
+          // Add selected class to the clicked module
+          var clickedModule = event.target;
+          clickedModule.classList.add("selected");
+     
+          // Memorizza l'ID del modulo selezionato
+          var selectedModuleId = clickedModule.id;
+          localStorage.setItem("selectedModuleId", selectedModuleId);
+        });
+     
+        // Create list items for each module
+        modules.forEach(function (module) {
+          var listItem = document.createElement("li");
+          listItem.textContent = module;
+          listItem.id = module;
+     
+          // Verifica se l'elemento corrente è l'ultimo modulo selezionato e aggiungi la classe 'selected' se necessario
+          if (module === selectedModuleId) {
+            listItem.classList.add("selected");
+          }
+     
+          tBooksList.appendChild(listItem);
+        });
+     
+        // Restore selected module after chart update
+        // Chiamare questa funzione dopo l'aggiornamento dei chart per ripristinare la classe 'selected'
+        restoreSelectedModule();
+      });*/
+
+
+
+      //           MAIN CODE
+      // Initialize with no visible Chart at the begin but after eight second!
+
+      var addButtonEl = document.getElementById("add-button");
+      addButtonEl.addEventListener("click", addInfoModule);
+      const inputFieldEl = document.getElementById("input-field");
+      const buttonLogin = document.getElementById("button-login"); //variable of button login
+      const ShowDatadEl = document.getElementById("show-chart");
+      var isChartVisible = false; // Variabile per tenere traccia dello stato del grafico
+
+
+      // NOTE ---->>>  Click first-> SHOW DATA   Click after ->> HIDE DATA
+      ShowDatadEl.addEventListener("click", function () {
+        var chartElements = [
+          document.getElementById("myChart"),
+          document.getElementById("myLineChart"),
+          document.getElementById("myCircleChart")
+        ];
+
+        // Add or remove class "show" and set display with the actual STATE 
+        chartElements.forEach(function (element) {
+          element.classList.toggle("show");
+          element.style.display = isChartVisible ? "none" : "block";
+        });
+
+        isChartVisible = !isChartVisible; // Invert chart state
+        // Change button text based on chart state
+        ShowDatadEl.textContent = isChartVisible ? "Hide Data" : "Show Data";
+      });
+
+      function addInfoModule() {
+        var name = inputFieldEl.value;
+        window.open("https://github.com/Innovative-Dynamics", "_blank");
+        /* if (name !== "") {
+          document.getElementById("popup-message").innerHTML = "Ciao " + name + "!";
+          document.getElementById("popup-message").parentNode.classList.add("show");
+          inputFieldEl.value = "";
+          setTimeout(function () {
+            document.getElementById("popup").classList.remove("show");
+          }, 3000);
+ 
+          // Save on browser memory
+          var savedModules = localStorage.getItem("modules");
+          var modules = savedModules ? JSON.parse(savedModules) : [];
+          modules.push(name);
+          localStorage.setItem("modules", JSON.stringify(modules));
+        }*/
+      }
+
+      // Recupera i moduli salvati dalla memoria del browser e li visualizza nella lista "Tbooks" all'avvio della pagina
+      window.addEventListener("DOMContentLoaded", function () {
+        var savedModules = localStorage.getItem("modules");
+        var modules = savedModules ? JSON.parse(savedModules) : [];
+        var tBooksList = document.getElementById("Tbooks");
+      });
+
+    </script>
+
+
+
+
+    <!-- Test Section-->
+    <div class="container">
+      <div id="input-TestField" class="hidden">
+        <script src="Test.js" type="module"></script>
+        <input type="text" id="input-TextPswField" placeholder="Insert Psw Code">
+        <p id="error-message" class="error-message"></p>
+      </div>
+      <div id="page-test" class="hidden">
+        <div class="container">
+          <img id="logo-innovative" src="logo.png" onclick="location.reload();" style="cursor: pointer;">
+          <h1 id="title">Test</h1>
+          <div class="field">
+            <button id="add-TestButton">Add Module</button>
+            <button id="remove-TestButton">Remove Module</button>
+            <ul id="TestBooks"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+</body>
+</div>
+
+</html>

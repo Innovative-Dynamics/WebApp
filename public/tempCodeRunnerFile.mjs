@@ -1,0 +1,1 @@
+const dataInDB = ref(database, "valore")

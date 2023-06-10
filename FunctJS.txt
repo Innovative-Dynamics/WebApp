@@ -1,0 +1,252 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"
+import { getDatabase, ref, onValue, push, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
+
+const appSettings = {
+    databaseURL: "https://embeddedapp-4a298-default-rtdb.europe-west1.firebasedatabase.app/"
+}
+
+const app = initializeApp(appSettings)
+const database = getDatabase(app)
+const booksInDB = ref(database, "books")
+const DataWriteInDB = ref(database, "write")
+const inputFieldEl = document.getElementById("input-field")
+const addButtonEl = document.getElementById("add-button")
+const booksEl = document.getElementById("books")
+const dataInDB = ref(database, "valore")
+const addButtonElPlus = document.getElementById("add-button-plus")
+const decreaseButtonElPlus = document.getElementById("add-button-decrease")
+
+
+onValue(booksInDB, function (snapshot) { //Show real time book list in HTML Page
+    if (snapshot.exists()) {
+        let booksArray = Object.entries(snapshot.val())//Switch to booksIDARRAY
+        //let booksIDArray = Object.entries(snapshot.val())// entries: Both: ID and Name
+        clearBooksListEl() //All clear in the HTML PAGE LIST!!
+        for (let i = 0; i < booksArray.length; i++) {
+            let booksIDArray = Object.entries(snapshot.val())// entries: Both: ID and Name
+            let currentBook = booksIDArray[i]
+            let currentBookID = currentBook[0]
+            let currentBookValue = currentBook[1]
+
+            appendItemToBooksListEl(currentBook)
+        }
+    } else {
+        //booksEl.innerHTML = "No itemes here"
+        clearBooksListEl()
+        appendItemToBooksListEl(" /") //RESOLVE THIS PROBLEM (?) only he second char is visible and i don't know why
+
+    }
+})
+
+
+
+
+addButtonEl.addEventListener("click", function () {
+    let inputValue = inputFieldEl.value
+    push(booksInDB, inputValue) //Refactor the line below into its own
+    //inputFieldEl.value = ""
+    clearInputFieldEl()
+    //appendItemToBooksListEl(inputValue) //Is ALREADY call in OnValue
+    //console.log(`${inputValue} added to database`)//Show control in index.mjs, not here
+})
+
+function clearInputFieldEl() {//Clear Insert item
+    inputFieldEl.value = ""
+}
+
+function appendItemToBooksListEl(item) {//Append world in HTML page function
+    //booksEl.innerHTML += `<li>${itemValue}</li>`
+    let newEl = document.createElement("li")
+    let itemID = item[0]
+    let itemValue = item[1]
+
+    newEl.textContent = itemValue
+    booksEl.append(newEl)
+
+    newEl.addEventListener("click", function () {
+        let exactLocationOfItemInDB = ref(database, `books/${itemID}`)
+        remove(exactLocationOfItemInDB)
+    })
+}
+
+function clearBooksListEl() {
+    booksEl.innerHTML = " " //You can view once time item in HTML PAGE!
+}
+
+
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!FROM HERE -- BAR CHART!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+var yValues = [10, 0, 0, 0, 0, 0] // Initialize variables
+
+var ctx_live = document.getElementById("myChart");
+var xValues = ["Nutrient", "pH", "Umidità (%)", "Temperatura (C)", "Fotoresistenza", "Acqua (L)"];
+var barColors = ["red", "green", "orange", "yellow", "brown", "blue"];
+onValue(DataWriteInDB, function (snapshot) {
+    if (snapshot.exists()) {
+        var dataWriteArray = Object.values(snapshot.val())//From Object to an Array
+        let datasArray = Object.entries(snapshot.val());
+        for (let i = 0; i < datasArray.length - 1; i++) { // Itera su tutti gli elementi tranne l'ultimo
+            let currentData = datasArray[i];
+            let currentDataKey = currentData[0];
+            let exactLocationOfDataWrite = ref(database, `write/${currentDataKey}`);
+            remove(exactLocationOfDataWrite);
+        }
+        //yValues[0] = dataWriteArray[datasArray.length]
+        //myChart.update();
+    }
+});
+
+// Increase value of Nutrient and decrease ------------->>>>  THIS IS AN EXAMPLE TO TEST CODE but we can change this behaivour
+
+addButtonElPlus.addEventListener("click", function () {
+    yValues[0]++;
+    yValues.push(yValues[0]);
+    let inpuTyValues = yValues[0]
+    push(DataWriteInDB, inpuTyValues)
+    myChart.update();
+});
+decreaseButtonElPlus.addEventListener("click", function () {
+    yValues[0]--;
+    yValues.push(yValues[0]);
+    let InpuTyValues = yValues[0]
+    push(DataWriteInDB, InpuTyValues)
+    myChart.update();
+});
+
+
+//Input chart - MyChart
+var myChart = new Chart(ctx_live, {
+    type: "bar",
+    data: {
+        labels: xValues,
+        datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+        }]
+    },
+    options: {
+        responsive: true,
+        legend: { display: false },
+        title: {
+            display: true,
+            text: "Chart main Data"
+        }
+    }
+});
+
+// Generate random power consumption data
+//                                                !!!    HERE WE MANAGE THE LINE GRAPH    !!!
+function generateData(numPoints) {
+    let data = [];
+    let time = Date.now();
+    for (let i = 0; i < numPoints; i++) {
+        time += 1000; // 1 second interval
+        data.push({ x: time, y: Math.floor(Math.random() * 500) });
+    }
+    return data;
+}
+const now = new Date(); // Current hour
+const xLineValues = []; // Inizializza l'array delle etichette
+
+// GENERAATE new tag every minutes and we see the last ten minutes
+for (let i = 0; i <= 10; i++) {
+    const date = new Date(now.getTime() - (10 - i) * 60 * 1000); // calcolate the date for the current tag
+    const minutes = date.getMinutes().toString().padStart(2, '0'); // Ottiene i minuti formatati con lo zero iniziale
+    const label = `${date.getHours()}:${minutes}`; // covert to string from tag
+    xLineValues.push(label); // add tag on x axis of time 
+}
+const yLineValues = [23, 25, 38, 39, 19, 9, 16, 31, 24, 34, 23];
+
+const myLineChart = new Chart("myLineChart", {
+    type: "line",
+    data: {
+        labels: xLineValues,
+        datasets: [{
+            fill: false,
+            lineTension: 0,
+            backgroundColor: "rgba(0,0,255,1.0)",
+            borderColor: "rgba(0,0,255,0.1)",
+            data: yLineValues
+        }]
+    },
+    options: {
+        legend: { display: false },
+        scales: {
+            yAxes: [{ ticks: { min: 0, max: 60 } }],
+        }
+    }
+});
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!                  Third circle CHART                   !!!
+var xCircleValues = ["Temperature", "Spread"];
+var yCircleValues = [55, 45];
+
+var barColors = [
+    "#b91d47",
+    "#00aba9",
+];
+
+var myCircleChart = new Chart("myCircleChart", {
+    type: "doughnut",
+    data: {
+        labels: xCircleValues,
+        datasets: [{
+            backgroundColor: barColors,
+            data: yCircleValues
+        }]
+    },
+    options: {
+        title: {
+            display: true,
+            text: "Max T (C) %",
+            fontColor: "white"
+        },
+        legend: {
+            labels: {
+                fontColor: "white"
+            }
+        }
+    }
+});
+
+
+// NOTE!!!   HERE WE GET THE VALUE FROM THE DATABASE !!!!!!!!!!!  Note ->  we start from i = 1 beause the first value is write by the users (for now)...  the positions vector in database are opposite to yValue index
+onValue(dataInDB, function (snapshot) {
+    if (snapshot.exists()) {
+        var dataArray = Object.values(snapshot.val())//From Object to an Array
+        const latestYValue = dataArray[2] // IMPORTANT NOTE::: dataArray WITH INDEX 2 is Temperature
+        const now = new Date();
+        const latestXValue = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+        xLineValues.push(latestXValue);
+        yLineValues.push(latestYValue);
+        if (xLineValues.length > 11) { //SCROLL LINE CHART IN TIME
+            xLineValues.shift();
+            yLineValues.shift();
+        }
+        // Function update
+        myLineChart.data.datasets[0].data = yLineValues; //UPDATE LINE CHART HERE
+        myLineChart.data.labels = xLineValues;          // LINE CHART
+        myLineChart.update();                           // LINE CHART
+        yCircleValues[0] = dataArray[2];
+        yCircleValues[1] = 100 - yCircleValues[1]
+        myCircleChart.update();
+        for (let i = 0; i < dataArray.length; i++) {
+            yValues[i + 1] = dataArray[dataArray.length - i - 1] // IMPORTANT NOTE::: dataArray dim is equal to 5, 
+            myChart.update();                                    // yValues dim is equal to 6
+        }
+    } else {
+        console.log("Vuoto")
+    }
+})
+
+// Note: --->>>> Here we get the dataWRITE from the DataBase
+onValue(DataWriteInDB, function (snapshot) {
+    if (snapshot.exists()) {
+        var dataArray = Object.values(snapshot.val())//From Object to an Array
+        yValues[0] = dataArray[0]
+        myChart.update();
+    } else {
+        console.log("Vuoto")
+    }
+})
+
